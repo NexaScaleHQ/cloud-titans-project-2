@@ -585,10 +585,14 @@ We will make some Linux Kernel configuration changes to ensure optimal performan
 
 - Tune Linux Kernel
 This can be achieved by making session changes which does not persist beyond the current session terminal.
+
+```
 sudo sysctl -w vm.max_map_count=262144
 sudo sysctl -w fs.file-max=65536
 ulimit -n 65536
 ulimit -u 4096
+```
+
 To make a permanent change, edit the file /etc/security/limits.conf and append the below
 sonarqube   -   nofile   65536
 sonarqube   -   nproc    4096
