@@ -583,8 +583,9 @@ Here is a manual approach to installation. Ensure that you can to automate the s
 Below is a step by step guide how to install SonarQube 7.9.3 version. It has a strong prerequisite to have Java installed since the tool is Java-based. MySQL support for SonarQube is deprecated, therefore we will be using PostgreSQL.
 We will make some Linux Kernel configuration changes to ensure optimal performance of the tool – we will increase vm.max_map_count, file discriptor and ulimit.
 
-- Tune Linux Kernel
-This can be achieved by making session changes which does not persist beyond the current session terminal.
+
+**Tune Linux Kernel**
+- This can be achieved by making session changes which does not persist beyond the current session terminal.
 
 ```
 sudo sysctl -w vm.max_map_count=262144
@@ -593,20 +594,43 @@ ulimit -n 65536
 ulimit -u 4096
 ```
 
-To make a permanent change, edit the file /etc/security/limits.conf and append the below
+- To make a permanent change, edit the file /etc/security/limits.conf and append the below
+
+```
 sonarqube   -   nofile   65536
 sonarqube   -   nproc    4096
-Before installing, let us update and upgrade system packages:
+```
+
+- Before installing, let us update and upgrade system packages:
+
+```
 sudo apt-get update
 sudo apt-get upgrade
-Install wget and unzip packages
+```
+
+- Install wget and unzip packages
+
+```
 sudo apt-get install wget unzip -y
-Install OpenJDK and Java Runtime Environment (JRE) 11
+```
+
+- Install OpenJDK and Java Runtime Environment (JRE) 11
+
+```
  sudo apt-get install openjdk-11-jdk -y
  sudo apt-get install openjdk-11-jre -y
-Set default JDK – To set default JDK or switch to OpenJDK enter below command:
+ ```
+
+- Set default JDK – To set default JDK or switch to OpenJDK enter below command:
+
+```
  sudo update-alternatives --config java
+ ```
+
 If you have multiple versions of Java installed, you should see a list like below:
+
+
+```
 Selection    Path                                            Priority   Status
 
 
@@ -623,10 +647,19 @@ Selection    Path                                            Priority   Status
 
 
 * 3            /usr/lib/jvm/java-8-oracle/jre/bin/java          1081      manual mode
+```
+
+
 Type "1" to switch OpenJDK 11
-Verify the set JAVA Version:
+
+- Verify the set JAVA Version:
+```
 java -version
-Output
+```
+
+- Output
+
+```
 java -version
 
 
@@ -635,22 +668,43 @@ openjdk version "11.0.7" 2020-04-14
 
 OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-3ubuntu1)
 
-
 OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-3ubuntu1, mixed mode, sharing)
-Install and Setup PostgreSQL 10 Database for SonarQube
+```
+
+- Install and Setup PostgreSQL 10 Database for SonarQube
+
 The command below will add PostgreSQL repo to the repo list:
+
+```
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
-Download PostgreSQL software
+```
+
+- Download PostgreSQL software
+
+```
 wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
-Install PostgreSQL Database Server
+```
+
+- Install PostgreSQL Database Server
+```
 sudo apt-get -y install postgresql postgresql-contrib
-Start PostgreSQL Database Server
+```
+
+- Start PostgreSQL Database Server
+
+```
 sudo systemctl start postgresql
-Enable it to start automatically at boot time
+```
+
+- Enable it to start automatically at boot time
+```
 sudo systemctl enable postgresql
-Change the password for default postgres user (Pass in the password you intend to use, and remember to save it somewhere)
-sudo passwd postgres
-Switch to the postgres user
+```
+- Change the password for default postgres user (Pass in the password you intend to use, and remember to save it somewhere)
+
+`sudo passwd postgres`
+
+- Switch to the postgres user
 su - postgres
 Create a new user by typing
 createuser sonar
